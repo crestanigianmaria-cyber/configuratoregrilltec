@@ -5,7 +5,26 @@ import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion'
 /* =============================================
    DATA
    ============================================= */
-const EVENT_PHOTOS = ['/logo_grilltec.png', ...Array.from({ length: 20 }, (_, i) => `/events/${i + 1}.jpg`)];
+const EVENT_PHOTOS = [
+  '/logo_grilltec.png',
+  '/events/Grilltec-2.jpg',
+  '/events/Grilltec-3.jpg',
+  '/events/Grilltec-4.jpg',
+  '/events/Grilltec-5.jpg',
+  '/events/Grilltec-7.jpg',
+  '/events/Grilltec-31.jpg',
+  '/events/Grilltec-35.jpg',
+  '/events/Grilltec-37.jpg',
+  '/events/Grilltec-39.jpg',
+  '/events/Grilltec-41.jpg',
+  '/events/Grilltec-43.jpg',
+  '/events/Grilltec-65.jpg',
+  '/events/Grilltec-69.jpg',
+  '/events/Grilltec-72.jpg',
+  '/events/Grilltec-82.jpg',
+  '/events/Grilltec-85.jpg',
+  '/events/Grilltec-87.jpg'
+];
 
 const MATERIALS_DB = {
   inox: {
