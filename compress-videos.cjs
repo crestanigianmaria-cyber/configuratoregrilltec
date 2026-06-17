@@ -14,12 +14,9 @@ function compressVideo(inputPath) {
     
     ffmpeg(inputPath)
       .outputOptions([
-        '-c:v libx264',
-        '-crf 28',            // good quality, very small size
-        '-preset fast',       // fast compression
+        '-c:v copy',          // DO NOT re-encode the video (100% original quality)
         '-an',                // strip audio completely (videos are muted anyway)
-        '-movflags +faststart', // enables browser streaming immediately (CRITICAL for Netlify speed!)
-        '-vf scale=-2:1080'   // scale down to max 1080p, keeps aspect ratio
+        '-movflags +faststart' // enables browser streaming immediately
       ])
       .save(tempPath)
       .on('end', () => {
@@ -36,10 +33,15 @@ function compressVideo(inputPath) {
 }
 
 async function run() {
-  const files = fs.readdirSync(publicDir).filter(f => f.endsWith('.mp4'));
-  for (const file of files) {
-    if (file === 'fiamma.mp4') continue; // Skip the old unused flame
-    await compressVideo(path.join(publicDir, file));
+  const dirs = [publicDir, path.join(publicDir, 'yellowstone')];
+  for (const dir of dirs) {
+    if (fs.existsSync(dir)) {
+      const files = fs.readdirSync(dir).filter(f => f.endsWith('.mp4'));
+      for (const file of files) {
+        if (file === 'fiamma.mp4') continue;
+        await compressVideo(path.join(dir, file));
+      }
+    }
   }
   console.log('All videos compressed successfully!');
 }

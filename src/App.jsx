@@ -121,6 +121,79 @@ const MATERIALS_DB = {
 
 const PRODUCTS = [
   {
+    id: 'yellowstone',
+    name: 'Yellowstone',
+    tagline: 'L\'esperienza definitiva del barbecue off-road.',
+    description: 'Yellowstone è progettato per le vere sfide all\'aperto. Scegli se equipaggiarlo con piedini per postazioni fisse o con robuste ruote per il vero off-road. Personalizza con mensole e paratie laterali (con o senza sportellino) per adattarlo ad ogni tua avventura.',
+    image: '/yellowstone/1.jpeg',
+    video: '/yellowstone/principale.mp4',
+    intro360: '/yellowstone/360.mp4',
+    thumbnail: '/yellowstone/1.jpeg',
+    basePrice: 1295.64,
+    variantType: 'yellowstone',
+    features: [
+      'Configurabile con ruote o piedini fissi',
+      'Mensole modulari opzionali',
+      'Paratie protettive laterali frontali',
+    ],
+    variantGroups: [
+      {
+        id: 'size',
+        label: 'Dimensione',
+        options: [
+          { id: '800', label: 'L 800', sub: 'Camera 800×740×720H mm', specs: ['Camera L 800 × P 740 × H 720 mm', 'Ingombro L 900 × P 900 × H 2550 mm', 'Paratie 400x570 H, Posteriore 700x570 H'] },
+          { id: '1000', label: 'L 1000', sub: 'Camera 1000×740×720H mm', specs: ['Camera L 1000 × P 740 × H 720 mm', 'Ingombro L 1100 × P 900 × H 2550 mm', 'Paratie 400x570 H, Posteriore 900x570 H'] },
+          { id: '1200', label: 'L 1200', sub: 'Camera 1200×740×720H mm', specs: ['Camera L 1200 × P 740 × H 720 mm', 'Ingombro L 1300 × P 900 × H 2550 mm', 'Paratie 400x570 H, Posteriore 1100x570 H'] },
+        ],
+      },
+      {
+        id: 'finish',
+        label: 'Materiale',
+        options: [
+          { id: 'ral7016', label: 'Verniciato RAL 7016', sub: 'Articolato verniciato RAL 7016' },
+          { id: 'corten',  label: 'Acciaio Corten',     sub: 'Articolato corten' },
+          { id: 'inox',    label: 'AISI 304',            sub: 'Articolato AISI 304 finitura spazzolata' },
+        ],
+      },
+    ],
+    pricingMatrix: {
+      '800': { ral7016: 1295.64, corten: 1439.60, inox: 2159.40 },
+      '1000': { ral7016: 1610.40, corten: 1811.70, inox: 2745.00 },
+      '1200': { ral7016: 1822.68, corten: 2025.20, inox: 3037.80 },
+    },
+    baseOptions: [
+      { id: 'piedini', name: 'Piedini Fissi', price: 0.00, image: '/yellowstone/B.jpeg' },
+      { id: 'ruote_zincate', name: 'Ruote Zincate', price: 108.00, image: '/yellowstone/A.jpeg' },
+      { id: 'ruote_inox', name: 'Ruote AISI 304', price: 180.00, image: '/yellowstone/A.jpeg' },
+    ],
+    accessories: [
+      { 
+        id: 'mensole', name: 'Mensole Laterali', image: '/yellowstone/2.jpeg',
+        pricingMatrix: {
+          '800': { ral7016: 375.76, corten: 409.92, inox: 614.88 },
+          '1000': { ral7016: 389.18, corten: 434.56, inox: 636.84 },
+          '1200': { ral7016: 402.60, corten: 439.20, inox: 658.80 }
+        }
+      },
+      { 
+        id: 'paratie', name: 'Paratie Laterali', image: '/yellowstone/3.jpeg',
+        pricingMatrix: {
+          '800': { ral7016: 241.56, corten: 263.52, inox: 395.28 },
+          '1000': { ral7016: 254.98, corten: 278.16, inox: 417.24 },
+          '1200': { ral7016: 268.40, corten: 292.80, inox: 439.20 }
+        }
+      },
+      { 
+        id: 'paratie_sportello', name: 'Paratie Laterali + Sportellino', image: '/yellowstone/3.jpeg',
+        pricingMatrix: {
+          '800': { ral7016: 322.08, corten: 351.36, inox: 527.04 },
+          '1000': { ral7016: 362.34, corten: 395.28, inox: 592.92 },
+          '1200': { ral7016: 402.60, corten: 439.20, inox: 658.80 }
+        }
+      },
+    ],
+  },
+  {
     id: 'suma',
     name: 'Suma',
     tagline: 'Il barbecue da tavolo professionale.',
@@ -1132,12 +1205,304 @@ function FlameTransition({ onComplete }) {
 }
 
 /* =============================================
+   YELLOWSTONE CONFIGURATOR
+   ============================================= */
+function YellowstoneConfigurator({ product, onBack }) {
+  const [introPhase, setIntroPhase] = useState(0); // 0: intro1, 1: intro2, 2: config
+  const [selectedSize, setSelectedSize] = useState('800');
+  const [selectedFinish, setSelectedFinish] = useState('ral7016');
+  const [selectedBase, setSelectedBase] = useState('piedini');
+  const [selectedAcc, setSelectedAcc] = useState([]);
+  const [tempImage, setTempImage] = useState(null);
+
+  const sizeGroup = product.variantGroups.find(g => g.id === 'size');
+  const finishGroup = product.variantGroups.find(g => g.id === 'finish');
+
+  const toggleAcc = (id) => {
+    setSelectedAcc(prev => {
+      let next = prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id];
+      // Mutually exclusive paratie logic
+      if (id === 'paratie_sportello' && next.includes('paratie_sportello')) {
+        next = next.filter(x => x !== 'paratie');
+      } else if (id === 'paratie' && next.includes('paratie')) {
+        next = next.filter(x => x !== 'paratie_sportello');
+      }
+      return next;
+    });
+
+    const accObj = product.accessories.find(a => a.id === id);
+    if (accObj) {
+      setTempImage(accObj.image);
+      clearTimeout(window.tempImageTimeout);
+      window.tempImageTimeout = setTimeout(() => setTempImage(null), 2500);
+    }
+  };
+
+  const handleBaseSelect = (id) => {
+    setSelectedBase(id);
+    const b = product.baseOptions.find(o => o.id === id);
+    if (b) {
+      setTempImage(b.image);
+      clearTimeout(window.tempImageTimeout);
+      window.tempImageTimeout = setTimeout(() => setTempImage(null), 2500);
+    }
+  };
+
+  const basePrice = product.pricingMatrix[selectedSize][selectedFinish];
+  const baseOpt = product.baseOptions.find(o => o.id === selectedBase);
+  const baseOptPrice = baseOpt?.price || 0;
+
+  const accTotal = selectedAcc.reduce((sum, id) => {
+    const acc = product.accessories.find(a => a.id === id);
+    return sum + (acc?.pricingMatrix[selectedSize][selectedFinish] || 0);
+  }, 0);
+  
+  const totalPrice = basePrice + baseOptPrice + accTotal;
+  const activeAccessories = product.accessories.filter(a => selectedAcc.includes(a.id));
+  const currentSize = sizeGroup.options.find(o => o.id === selectedSize);
+  const currentFinish = finishGroup.options.find(o => o.id === selectedFinish);
+
+  const handleRequestQuote = () => {
+    let details = `- Misura: ${currentSize?.label || ''}\n`;
+    details += `- Finitura: ${currentFinish?.label || ''}\n`;
+    details += `- Appoggio: ${baseOpt?.name || ''}\n`;
+    if (activeAccessories.length > 0) {
+      details += `- Accessori:\n`;
+      activeAccessories.forEach(acc => {
+        details += `  * ${acc.name}\n`;
+      });
+    }
+    sendQuoteEmail(product.name, details, totalPrice);
+  };
+
+  const { scrollY } = useScroll();
+  const scale = useTransform(scrollY, [0, 250], [1, 0.65]);
+  const yOffset = useTransform(scrollY, [0, 250], [0, -30]);
+
+  if (introPhase === 0) {
+    return (
+      <div className="fullscreen-video" onClick={() => setIntroPhase(1)}>
+        <video src={product.video} autoPlay muted playsInline onEnded={() => setIntroPhase(1)} />
+        <div className="skip-hint">Tocca per saltare</div>
+      </div>
+    );
+  }
+
+  if (introPhase === 1) {
+    return (
+      <div className="fullscreen-video" onClick={() => setIntroPhase(2)}>
+        <video src={product.intro360} autoPlay muted playsInline onEnded={() => setIntroPhase(2)} />
+        <div className="skip-hint">Tocca per saltare</div>
+      </div>
+    );
+  }
+
+  const showTemp = !!tempImage;
+
+  return (
+    <motion.div className="configurator" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.4 }}>
+      <NavBar onBack={onBack} />
+
+      <div className="config-layout">
+        
+        {/* VIEW AREA */}
+        <div className="viewer" style={{ backgroundColor: '#000' }}>
+          <div className="viewer-glow" />
+          <motion.div className="viewer-product" style={{ scale, y: yOffset, transformOrigin: 'top center' }}>
+            
+            {/* BACKGROUND 360 VIDEO */}
+            <video 
+              src={product.intro360} 
+              autoPlay loop muted playsInline 
+              className="viewer-video" 
+              style={{ opacity: showTemp ? 0 : 1, transition: 'opacity 0.6s ease' }} 
+            />
+
+            {/* TEMPORARY IMAGE OVERLAY */}
+            <AnimatePresence mode="wait">
+              {showTemp && (
+                <motion.img
+                  key={tempImage}
+                  src={tempImage}
+                  alt="Yellowstone Preview"
+                  className="viewer-video viewer-img"
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.5, ease: 'easeOut' }}
+                  style={{ position: 'absolute', inset: 0, zIndex: 2 }}
+                />
+              )}
+            </AnimatePresence>
+
+            {/* THUMBNAILS IN PICCOLO */}
+            <div className="viewer-accessories" style={{ zIndex: 3, opacity: showTemp ? 0 : 1, transition: 'opacity 0.6s ease' }}>
+              <AnimatePresence>
+                {activeAccessories.map((acc, i) => (
+                  <motion.div
+                    key={acc.id}
+                    className="hologram"
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, scale: 0.8 }}
+                    transition={{ delay: i * 0.1 }}
+                  >
+                    <div className="hologram-inner">
+                      <div style={{ backgroundImage: `url(${acc.image})`, backgroundSize: 'cover', backgroundPosition: 'center', width: '100%', height: '100%' }} />
+                    </div>
+                    <span className="hologram-label">{acc.name}</span>
+                  </motion.div>
+                ))}
+              </AnimatePresence>
+            </div>
+
+          </motion.div>
+        </div>
+
+        <div className="config-panel">
+          <motion.div className="config-product-header" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
+            <h2 className="config-model-name">{product.name}</h2>
+            <p className="config-model-sub">{product.tagline}</p>
+            <p className="config-description">{product.description}</p>
+          </motion.div>
+
+          {/* STEP 1: SIZE */}
+          <motion.div className="config-section" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
+            <div className="config-section-header">
+              <span className="config-section-label">1 — Dimensione</span>
+            </div>
+            <div className="size-tabs">
+              {sizeGroup.options.map(opt => {
+                const active = selectedSize === opt.id;
+                return (
+                  <motion.button
+                    key={opt.id}
+                    className={`size-tab ${active ? 'size-tab--active' : ''}`}
+                    onClick={() => setSelectedSize(opt.id)}
+                    whileTap={{ scale: 0.97 }}
+                  >
+                    <span className="size-tab-label">{opt.label}</span>
+                    <span className="size-tab-sub">{opt.sub}</span>
+                  </motion.button>
+                );
+              })}
+            </div>
+            {/* Specs accordion */}
+            <AnimatePresence mode="wait">
+              <motion.ul
+                key={selectedSize}
+                className="variant-specs variant-specs--inline"
+                initial={{ opacity: 0, y: -6 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.25 }}
+              >
+                {currentSize.specs.map((s, i) => <li key={i}>{s}</li>)}
+              </motion.ul>
+            </AnimatePresence>
+          </motion.div>
+
+          {/* STEP 2: FINISH */}
+          <motion.div className="config-section" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}>
+            <div className="config-section-header">
+              <span className="config-section-label">2 — Materiale Base</span>
+            </div>
+            <div className="matrix-group">
+              {finishGroup.options.map(opt => {
+                const active = selectedFinish === opt.id;
+                const price = product.pricingMatrix[selectedSize][opt.id];
+                return (
+                  <motion.div
+                    key={opt.id}
+                    className={`matrix-option ${active ? 'matrix-option--active' : ''}`}
+                    onClick={() => setSelectedFinish(opt.id)}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    <div className="matrix-option-top">
+                      <div className="matrix-option-info">
+                        <p className="matrix-option-label">{opt.label}</p>
+                        {opt.sub && <p className="matrix-option-sub">{opt.sub}</p>}
+                        <p className="matrix-option-price">€ {price.toFixed(2)}</p>
+                      </div>
+                      <CheckBadge active={active} />
+                    </div>
+                  </motion.div>
+                );
+              })}
+            </div>
+          </motion.div>
+
+          {/* STEP 3: BASE SELECTION */}
+          <motion.div className="config-section" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}>
+            <div className="config-section-header">
+              <span className="config-section-label">3 — Appoggio / Mobilità</span>
+            </div>
+            <div className="matrix-group">
+              {product.baseOptions.map(opt => {
+                const active = selectedBase === opt.id;
+                return (
+                  <motion.div
+                    key={opt.id}
+                    className={`matrix-option ${active ? 'matrix-option--active' : ''}`}
+                    onClick={() => handleBaseSelect(opt.id)}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    <div className="matrix-option-top">
+                      <div className="matrix-option-info">
+                        <p className="matrix-option-label">{opt.name}</p>
+                        <p className="matrix-option-price">{opt.price === 0 ? 'Incluso' : `+ € ${opt.price.toFixed(2)}`}</p>
+                      </div>
+                      <CheckBadge active={active} />
+                    </div>
+                  </motion.div>
+                );
+              })}
+            </div>
+          </motion.div>
+
+          {/* STEP 4: ACCESSORIES */}
+          <motion.div className="config-section" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}>
+            <div className="config-section-header">
+              <span className="config-section-label">4 — Accessori (prezzo in base a misura/finitura)</span>
+            </div>
+            <div className="acc-grid">
+              {product.accessories.map(acc => {
+                const active = selectedAcc.includes(acc.id);
+                const accPrice = acc.pricingMatrix[selectedSize][selectedFinish];
+                return (
+                  <motion.div
+                    key={acc.id}
+                    className={`acc-card ${active ? 'acc-card--active' : ''}`}
+                    onClick={() => toggleAcc(acc.id)}
+                    whileTap={{ scale: 0.97 }}
+                  >
+                    <div className="acc-card-body">
+                      <p className="acc-card-name">{acc.name}</p>
+                      <p className="acc-card-price">+ € {accPrice.toFixed(2)}</p>
+                    </div>
+                    <CheckBadge active={active} />
+                  </motion.div>
+                );
+              })}
+            </div>
+          </motion.div>
+
+          {/* FOOTER */}
+          <FooterBar totalPrice={totalPrice} delay={0.6} onRequestQuote={handleRequestQuote} />
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
+/* =============================================
    ROOT
    ============================================= */
 const CONFIG_MAP = {
   suma:   SumaConfigurator,
   flat:   FlatConfigurator,
   matrix: MatrixConfigurator,
+  yellowstone: YellowstoneConfigurator,
 };
 
 export default function App() {
