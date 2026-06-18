@@ -1707,7 +1707,7 @@ function CompositionConfigurator({ product, onBack }) {
     sendQuoteEmail(product.name, details, totalPrice);
   };
 
-  const activeItem = product.items.find(i => i.id === activeTab);
+  const activeItem = product.items.find(i => i.id === activeTab) || product.items[0];
   const viewProduct = { ...product, video: activeItem.video, image: activeItem.image };
 
   return (
