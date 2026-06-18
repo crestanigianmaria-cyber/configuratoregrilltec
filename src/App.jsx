@@ -274,6 +274,16 @@ const PRODUCTS = [
           standard: { price: 122.00, specs: '520×300×110H mm' },
         },
       },
+      {
+        id: 'coperchio_inox',
+        name: 'Coperchio in Acciaio Inox',
+        subtitle: 'Per cotture profonde e uniformi e per mantenere la temperatura nel tempo',
+        image: '/copercchiosumo.png',
+        sizeVariants: {
+          compact:  { price: 97.60, specs: '520×200×110H mm' },
+          standard: { price: 122.00, specs: '520×300×110H mm' },
+        },
+      },
     ],
   },
   {
@@ -353,6 +363,100 @@ const PRODUCTS = [
     },
     accessories: [],
   },
+  {
+    id: 'arredo_giardino',
+    name: 'Linea Arredo Giardino IPE',
+    tagline: 'Componi il tuo spazio relax outdoor.',
+    description: 'La nostra esclusiva linea di arredo giardino combina la solidità dell\'acciaio alla raffinatezza del legno IPE ad altissima densità. Personalizza le dimensioni e le finiture per ogni singolo elemento: tavoli, panche e accessori perfettamente abbinati.',
+    video: '/arredogiardino/tavolo.mp4',
+    image: '/arredogiardino/tavolo.mp4',
+    thumbnail: '/arredogiardino/tavolo.mp4',
+    basePrice: 988.20,
+    variantType: 'composition',
+    features: [
+      'Legno IPE 120 mm ad altissima densità',
+      'Strutture modulari in acciaio',
+      'Componibile su misura',
+      'Massima resistenza alle intemperie'
+    ],
+    items: [
+      {
+        id: 'tavolo',
+        name: 'Tavolo Outdoor',
+        video: '/arredogiardino/tavolo.mp4',
+        image: '/arredogiardino/tavolo.mp4',
+        materials: [
+          { id: 'ral', label: 'Verniciato RAL' },
+          { id: 'aisi', label: 'Acciaio AISI 304' }
+        ],
+        sizes: [
+          { id: '2000', label: '2000x1000', sub: 'H 750 mm' },
+          { id: '2500', label: '2500x1000', sub: 'H 750 mm' },
+          { id: '3000', label: '3000x1000', sub: 'H 750 mm' }
+        ],
+        pricingMatrix: {
+          '2000': { ral: 988.20, aisi: 1185.84 },
+          '2500': { ral: 1207.80, aisi: 1449.36 },
+          '3000': { ral: 1427.40, aisi: 1712.88 }
+        }
+      },
+      {
+        id: 'panca',
+        name: 'Panca',
+        video: '/arredogiardino/panca.mp4',
+        image: '/arredogiardino/panca.mp4',
+        materials: [
+          { id: 'grezzo', label: 'Ferro Grezzo' },
+          { id: 'aisi', label: 'Acciaio AISI 304' }
+        ],
+        sizes: [
+          { id: '600', label: '600x400', sub: 'H 450 mm' },
+          { id: '800', label: '800x400', sub: 'H 450 mm' },
+          { id: '1000', label: '1000x400', sub: 'H 450 mm' }
+        ],
+        pricingMatrix: {
+          '600': { grezzo: 237.90, aisi: 285.48 },
+          '800': { grezzo: 292.80, aisi: 351.36 },
+          '1000': { grezzo: 347.70, aisi: 417.24 }
+        }
+      },
+      {
+        id: 'panca_schienale',
+        name: 'Panca con Schienale',
+        video: '/arredogiardino/panca-schienale.mp4',
+        image: '/arredogiardino/panca-schienale.mp4',
+        materials: [
+          { id: 'grezzo', label: 'Ferro Grezzo' },
+          { id: 'aisi', label: 'Acciaio AISI 304' }
+        ],
+        sizes: [
+          { id: '600', label: '600x400', sub: 'H 450+300 mm' },
+          { id: '800', label: '800x400', sub: 'H 450+300 mm' },
+          { id: '1000', label: '1000x400', sub: 'H 450+300 mm' }
+        ],
+        pricingMatrix: {
+          '600': { grezzo: 329.40, aisi: 395.28 },
+          '800': { grezzo: 402.60, aisi: 483.12 },
+          '1000': { grezzo: 475.80, aisi: 570.96 }
+        }
+      },
+      {
+        id: 'cestino',
+        name: 'Cover Copribidone',
+        video: '/arredogiardino/cestino.mp4',
+        image: '/arredogiardino/cestino.mp4',
+        materials: [
+          { id: 'aisi', label: 'AISI 304 + IPE' }
+        ],
+        sizes: [
+          { id: 'standard', label: 'Est. 467x467', sub: 'H 800 mm' }
+        ],
+        pricingMatrix: {
+          'standard': { aisi: 497.76 }
+        }
+      }
+    ]
+  }
 ];
 
 /* =============================================
@@ -613,25 +717,27 @@ function FooterBar({ totalPrice, delay = 0.6, onRequestQuote }) {
   );
 }
 
-function ProductViewer({ product, activeAccessories }) {
+function ProductViewer({ product, activeAccessories, tempMedia }) {
   const { scrollY } = useScroll();
-  // Il video si rimpicciolisce del 35% e sale un po', ma NON sfuma.
   const scale = useTransform(scrollY, [0, 250], [1, 0.65]);
   const yOffset = useTransform(scrollY, [0, 250], [0, -30]);
 
+  const showTemp = !!tempMedia;
+  const isTempVideo = tempMedia && tempMedia.endsWith('.mp4');
+
   return (
-    <div className="viewer">
+    <div className="viewer" style={{ backgroundColor: '#000' }}>
       <div className="viewer-glow" />
       <motion.div className="viewer-product" style={{ scale, y: yOffset, transformOrigin: 'top center' }}>
+        
+        {/* Main Background */}
         {product.video ? (
           <motion.video
             autoPlay loop muted playsInline
             key={product.id + '-video'}
             src={product.video}
             className="viewer-video"
-            initial={{ opacity: 0, scale: 0.88, y: 30 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            transition={{ duration: 1.0, type: 'spring', bounce: 0.3 }}
+            style={{ opacity: showTemp ? 0 : 1, transition: 'opacity 0.6s ease' }}
           />
         ) : (
           <motion.img
@@ -639,13 +745,45 @@ function ProductViewer({ product, activeAccessories }) {
             src={product.image}
             alt={product.name}
             className="viewer-video viewer-img"
-            initial={{ opacity: 0, scale: 0.88, y: 30 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            transition={{ duration: 1.0, type: 'spring', bounce: 0.3 }}
+            style={{ opacity: showTemp ? 0 : 1, transition: 'opacity 0.6s ease' }}
           />
         )}
+
+        {/* Temporary Media Overlay */}
+        <AnimatePresence mode="wait">
+          {showTemp && (
+            isTempVideo ? (
+              <motion.video
+                key={tempMedia}
+                autoPlay muted playsInline
+                src={tempMedia}
+                className="viewer-video"
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.5, ease: 'easeOut' }}
+                style={{ position: 'absolute', inset: 0, zIndex: 2 }}
+              />
+            ) : (
+              <motion.img
+                key={tempMedia}
+                src={tempMedia}
+                alt="Preview"
+                className="viewer-video viewer-img"
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.5, ease: 'easeOut' }}
+                style={{ position: 'absolute', inset: 0, zIndex: 2 }}
+              />
+            )
+          )}
+        </AnimatePresence>
+
       </motion.div>
-      <motion.div className="viewer-accessories" style={{ scale, y: yOffset, transformOrigin: 'right center' }}>
+      
+      {/* Thumbnails in Piccolo */}
+      <motion.div className="viewer-accessories" style={{ scale, y: yOffset, transformOrigin: 'right center', zIndex: 3, opacity: showTemp ? 0 : 1, transition: 'opacity 0.6s ease' }}>
         <AnimatePresence>
           {activeAccessories.map((acc, i) => (
             <motion.div
@@ -656,7 +794,13 @@ function ProductViewer({ product, activeAccessories }) {
               exit={{ opacity: 0, scale: 0.5, y: 10 }}
               transition={{ type: 'spring', stiffness: 200, damping: 20, delay: i * 0.08 }}
             >
-              <video autoPlay loop muted playsInline src={acc.video} />
+              <div className="hologram-inner">
+                {acc.video ? (
+                  <video autoPlay loop muted playsInline src={acc.video} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                ) : (
+                  <div style={{ backgroundImage: `url(${acc.image})`, backgroundSize: 'cover', backgroundPosition: 'center', width: '100%', height: '100%' }} />
+                )}
+              </div>
               <div className="hologram-label">{acc.name.split(' ').slice(0, 2).join(' ')}</div>
             </motion.div>
           ))}
@@ -785,6 +929,7 @@ function SumaConfigurator({ product, onBack }) {
   const [selectedSize,   setSelectedSize]   = useState(sizeGroup.options[0].id);
   const [selectedFinish, setSelectedFinish] = useState(finishGroup.options[0].id);
   const [selectedAcc,    setSelectedAcc]    = useState([]);
+  const [tempMedia, setTempMedia] = useState(null);
 
   // When size changes, reset accessories
   const handleSizeChange = (sizeId) => {
@@ -794,6 +939,12 @@ function SumaConfigurator({ product, onBack }) {
 
   const toggleAcc = (id) => {
     setSelectedAcc(prev => prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]);
+    const accObj = product.accessories.find(a => a.id === id);
+    if (accObj) {
+      setTempMedia(accObj.video || accObj.image);
+      clearTimeout(window.tempMediaTimeoutSuma);
+      window.tempMediaTimeoutSuma = setTimeout(() => setTempMedia(null), 2500);
+    }
   };
 
   const basePrice = product.pricingMatrix[selectedSize]?.[selectedFinish] ?? product.basePrice;
@@ -824,7 +975,7 @@ function SumaConfigurator({ product, onBack }) {
       <NavBar onBack={onBack} />
 
       <div className="config-layout">
-        <ProductViewer product={product} activeAccessories={activeAccessories} />
+        <ProductViewer product={product} activeAccessories={activeAccessories} tempMedia={tempMedia} />
 
         <div className="config-panel">
           {/* Product intro */}
@@ -1506,6 +1657,261 @@ function YellowstoneConfigurator({ product, onBack }) {
 }
 
 /* =============================================
+   COMPOSITION CONFIGURATOR (Arredo Giardino)
+   ============================================= */
+function CompositionConfigurator({ product, onBack }) {
+  const [selections, setSelections] = useState(() => {
+    const init = {};
+    product.items.forEach(item => {
+      init[item.id] = {
+        size: item.sizes[0].id,
+        material: item.materials[0].id,
+        qty: 0
+      };
+    });
+    return init;
+  });
+
+  const [activeTab, setActiveTab] = useState(product.items[0].id);
+
+  const updateSelection = (itemId, key, value) => {
+    setSelections(prev => ({
+      ...prev,
+      [itemId]: { ...prev[itemId], [key]: value }
+    }));
+  };
+
+  const totalPrice = product.items.reduce((sum, item) => {
+    const sel = selections[item.id];
+    const price = item.pricingMatrix[sel.size]?.[sel.material] || 0;
+    return sum + (price * sel.qty);
+  }, 0);
+
+  const cartItems = product.items.filter(item => selections[item.id].qty > 0);
+
+  const handleRequestQuote = () => {
+    if (totalPrice === 0) {
+      alert('Seleziona almeno un elemento per richiedere un preventivo.');
+      return;
+    }
+    let details = `\n`;
+    product.items.forEach(item => {
+      const sel = selections[item.id];
+      if (sel.qty > 0) {
+        const sizeOpt = item.sizes.find(s => s.id === sel.size);
+        const matOpt = item.materials.find(m => m.id === sel.material);
+        const price = item.pricingMatrix[sel.size][sel.material];
+        details += `- ${sel.qty}x ${item.name} (${sizeOpt.label}, ${matOpt.label}) — € ${(price * sel.qty).toFixed(2)}\n`;
+      }
+    });
+    sendQuoteEmail(product.name, details, totalPrice);
+  };
+
+  const activeItem = product.items.find(i => i.id === activeTab);
+  const viewProduct = { ...product, video: activeItem.video, image: activeItem.image };
+
+  return (
+    <motion.div className="configurator" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.4 }}>
+      <NavBar onBack={onBack} />
+      <div className="config-layout">
+        <ProductViewer product={viewProduct} activeAccessories={[]} />
+
+        <div className="config-panel">
+          <motion.div className="config-product-header" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}>
+            <h2 className="config-model-name">{product.name}</h2>
+            <p className="config-model-sub">{product.tagline}</p>
+          </motion.div>
+
+          {/* CART SUMMARY (visible when something is in cart) */}
+          <AnimatePresence>
+            {cartItems.length > 0 && (
+              <motion.div
+                className="comp-cart-summary"
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
+                exit={{ opacity: 0, height: 0 }}
+                style={{
+                  background: 'linear-gradient(135deg, rgba(10,132,255,0.12), rgba(10,132,255,0.04))',
+                  border: '1px solid rgba(10,132,255,0.3)',
+                  borderRadius: 16,
+                  padding: '16px 20px',
+                  marginBottom: 16,
+                  overflow: 'hidden'
+                }}
+              >
+                <p style={{ margin: '0 0 12px', fontSize: '0.72rem', textTransform: 'uppercase', letterSpacing: '0.1em', color: '#0a84ff', fontWeight: 600 }}>
+                  La tua composizione
+                </p>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                  {cartItems.map(item => {
+                    const sel = selections[item.id];
+                    const sizeOpt = item.sizes.find(s => s.id === sel.size);
+                    const matOpt = item.materials.find(m => m.id === sel.material);
+                    const price = item.pricingMatrix[sel.size][sel.material];
+                    return (
+                      <div key={item.id} style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                        {/* Mini video thumbnail */}
+                        <div style={{ width: 52, height: 38, borderRadius: 8, overflow: 'hidden', flexShrink: 0, backgroundColor: '#111' }}>
+                          <video src={item.video} muted playsInline autoPlay loop style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                        </div>
+                        <div style={{ flex: 1, minWidth: 0 }}>
+                          <p style={{ margin: 0, fontSize: '0.88rem', fontWeight: 500, color: '#fff' }}>
+                            <span style={{ color: '#0a84ff', marginRight: 6 }}>{sel.qty}×</span>{item.name}
+                          </p>
+                          <p style={{ margin: 0, fontSize: '0.75rem', color: 'rgba(255,255,255,0.45)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                            {sizeOpt?.label} · {matOpt?.label}
+                          </p>
+                        </div>
+                        <p style={{ margin: 0, fontSize: '0.88rem', fontWeight: 600, color: '#fff', flexShrink: 0 }}>
+                          € {(price * sel.qty).toFixed(2)}
+                        </p>
+                      </div>
+                    );
+                  })}
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* ITEM CARDS */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+            {product.items.map((item, idx) => {
+              const sel = selections[item.id];
+              const isActive = activeTab === item.id;
+              const unitPrice = item.pricingMatrix[sel.size][sel.material];
+              const hasQty = sel.qty > 0;
+
+              return (
+                <motion.div
+                  key={item.id}
+                  className="comp-card"
+                  style={{
+                    backgroundColor: '#161616',
+                    borderRadius: 18,
+                    overflow: 'hidden',
+                    border: isActive
+                      ? '1px solid rgba(255,255,255,0.22)'
+                      : hasQty
+                      ? '1px solid rgba(10,132,255,0.35)'
+                      : '1px solid rgba(255,255,255,0.06)'
+                  }}
+                  initial={{ opacity: 0, y: 16 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.15 + idx * 0.08 }}
+                >
+                  {/* CARD HEADER */}
+                  <div
+                    onClick={() => setActiveTab(isActive ? null : item.id)}
+                    style={{ display: 'flex', alignItems: 'center', gap: 14, padding: '14px 16px', cursor: 'pointer' }}
+                  >
+                    {/* Video thumbnail */}
+                    <div style={{ width: 68, height: 52, borderRadius: 12, overflow: 'hidden', flexShrink: 0, backgroundColor: '#0a0a0a', position: 'relative' }}>
+                      <video
+                        src={item.video}
+                        muted playsInline
+                        autoPlay={isActive || hasQty}
+                        loop
+                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                      />
+                      {hasQty && (
+                        <div style={{
+                          position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center',
+                          backgroundColor: 'rgba(10,132,255,0.55)', backdropFilter: 'blur(2px)'
+                        }}>
+                          <span style={{ color: '#fff', fontWeight: 700, fontSize: '1.2rem' }}>{sel.qty}</span>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Name & price */}
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <p style={{ margin: 0, fontWeight: 600, fontSize: '0.98rem', color: '#fff' }}>{item.name}</p>
+                      <p style={{ margin: '3px 0 0', fontSize: '0.8rem', color: hasQty ? '#0a84ff' : 'rgba(255,255,255,0.4)' }}>
+                        {hasQty
+                          ? `${sel.qty} × € ${unitPrice.toFixed(2)} = € ${(unitPrice * sel.qty).toFixed(2)}`
+                          : `Da € ${Object.values(item.pricingMatrix[item.sizes[0].id])[0].toFixed(2)}`}
+                      </p>
+                    </div>
+
+                    {/* QTY controls */}
+                    <div
+                      style={{ display: 'flex', alignItems: 'center', gap: 2, backgroundColor: '#222', borderRadius: 22, padding: '3px' }}
+                      onClick={e => e.stopPropagation()}
+                    >
+                      <button
+                        onClick={() => updateSelection(item.id, 'qty', Math.max(0, sel.qty - 1))}
+                        style={{ width: 34, height: 34, borderRadius: 17, border: 'none', background: 'transparent', color: sel.qty > 0 ? '#fff' : 'rgba(255,255,255,0.25)', fontSize: '1.3rem', lineHeight: 1, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                      >−</button>
+                      <span style={{ width: 28, textAlign: 'center', fontSize: '1rem', fontWeight: 600, color: hasQty ? '#0a84ff' : '#fff' }}>{sel.qty}</span>
+                      <button
+                        onClick={() => { updateSelection(item.id, 'qty', sel.qty + 1); setActiveTab(item.id); }}
+                        style={{ width: 34, height: 34, borderRadius: 17, border: 'none', background: hasQty ? '#0a84ff' : '#333', color: '#fff', fontSize: '1.3rem', lineHeight: 1, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                      >+</button>
+                    </div>
+                  </div>
+
+                  {/* EXPANDED BODY */}
+                  <AnimatePresence>
+                    {isActive && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.28 }}
+                        style={{ overflow: 'hidden' }}
+                      >
+                        <div style={{ padding: '0 16px 18px', borderTop: '1px solid rgba(255,255,255,0.07)' }}>
+                          {/* SIZE */}
+                          <p style={{ margin: '14px 0 8px', fontSize: '0.7rem', textTransform: 'uppercase', letterSpacing: '0.1em', color: 'rgba(255,255,255,0.4)', fontWeight: 600 }}>Misura</p>
+                          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(88px, 1fr))', gap: 8 }}>
+                            {item.sizes.map(sz => (
+                              <button
+                                key={sz.id}
+                                className={`size-tab ${sel.size === sz.id ? 'size-tab--active' : ''}`}
+                                onClick={() => updateSelection(item.id, 'size', sz.id)}
+                              >
+                                <span className="size-tab-label">{sz.label}</span>
+                                {sz.sub && <span className="size-tab-sub">{sz.sub}</span>}
+                              </button>
+                            ))}
+                          </div>
+
+                          {/* MATERIAL */}
+                          <p style={{ margin: '16px 0 8px', fontSize: '0.7rem', textTransform: 'uppercase', letterSpacing: '0.1em', color: 'rgba(255,255,255,0.4)', fontWeight: 600 }}>Materiale</p>
+                          <div style={{ display: 'grid', gap: 8 }}>
+                            {item.materials.map(mat => (
+                              <div
+                                key={mat.id}
+                                className={`matrix-option ${sel.material === mat.id ? 'matrix-option--active' : ''}`}
+                                onClick={() => updateSelection(item.id, 'material', mat.id)}
+                              >
+                                <div className="matrix-option-top">
+                                  <div className="matrix-option-info">
+                                    <p className="matrix-option-label">{mat.label}</p>
+                                    <p className="matrix-option-price">€ {item.pricingMatrix[sel.size][mat.id].toFixed(2)} / pz</p>
+                                  </div>
+                                  <CheckBadge active={sel.material === mat.id} />
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </motion.div>
+              );
+            })}
+          </div>
+
+          <FooterBar totalPrice={totalPrice} delay={0.5} onRequestQuote={handleRequestQuote} />
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
+/* =============================================
    ROOT
    ============================================= */
 const CONFIG_MAP = {
@@ -1513,6 +1919,7 @@ const CONFIG_MAP = {
   flat:   FlatConfigurator,
   matrix: MatrixConfigurator,
   yellowstone: YellowstoneConfigurator,
+  composition: CompositionConfigurator,
 };
 
 export default function App() {
