@@ -1437,23 +1437,24 @@ function YellowstoneConfigurator({ product, onBack }) {
             <div className="config-section-header">
               <span className="config-section-label">3 — Appoggio / Mobilità</span>
             </div>
-            <div className="matrix-group">
+            <div className="acc-grid">
               {product.baseOptions.map(opt => {
                 const active = selectedBase === opt.id;
                 return (
                   <motion.div
                     key={opt.id}
-                    className={`matrix-option ${active ? 'matrix-option--active' : ''}`}
+                    className={`acc-card ${active ? 'acc-card--selected' : ''}`}
                     onClick={() => handleBaseSelect(opt.id)}
-                    whileTap={{ scale: 0.98 }}
+                    whileTap={{ scale: 0.97 }}
                   >
-                    <div className="matrix-option-top">
-                      <div className="matrix-option-info">
-                        <p className="matrix-option-label">{opt.name}</p>
-                        <p className="matrix-option-price">{opt.price === 0 ? 'Incluso' : `+ € ${opt.price.toFixed(2)}`}</p>
-                      </div>
-                      <CheckBadge active={active} />
+                    <div className="acc-card-img-wrap">
+                      <img src={opt.image} alt={opt.name} className="acc-card-img" />
                     </div>
+                    <div className="acc-card-body">
+                      <p className="acc-card-name">{opt.name}</p>
+                      <p className="acc-card-price">{opt.price === 0 ? 'Incluso' : `+ € ${opt.price.toFixed(2)}`}</p>
+                    </div>
+                    <CheckBadge active={active} />
                   </motion.div>
                 );
               })}
@@ -1472,10 +1473,13 @@ function YellowstoneConfigurator({ product, onBack }) {
                 return (
                   <motion.div
                     key={acc.id}
-                    className={`acc-card ${active ? 'acc-card--active' : ''}`}
+                    className={`acc-card ${active ? 'acc-card--selected' : ''}`}
                     onClick={() => toggleAcc(acc.id)}
                     whileTap={{ scale: 0.97 }}
                   >
+                    <div className="acc-card-img-wrap">
+                      <img src={acc.image} alt={acc.name} className="acc-card-img" />
+                    </div>
                     <div className="acc-card-body">
                       <p className="acc-card-name">{acc.name}</p>
                       <p className="acc-card-price">+ € {accPrice.toFixed(2)}</p>
@@ -1486,6 +1490,12 @@ function YellowstoneConfigurator({ product, onBack }) {
               })}
             </div>
           </motion.div>
+
+          {/* Preload hidden images to guarantee instant flash */}
+          <div style={{ display: 'none' }}>
+            {product.accessories.map(a => <img key={a.id} src={a.image} alt="preload" />)}
+            {product.baseOptions.map(b => <img key={b.id} src={b.image} alt="preload" />)}
+          </div>
 
           {/* FOOTER */}
           <FooterBar totalPrice={totalPrice} delay={0.6} onRequestQuote={handleRequestQuote} />
