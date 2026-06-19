@@ -203,6 +203,7 @@ body {
   flex: 1;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
+  padding-bottom: 80px; /* Spazio per il badge OpusDesign */
 }
 
 .product-select-body::-webkit-scrollbar { display: none; }
