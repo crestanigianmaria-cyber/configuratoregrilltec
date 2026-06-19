@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Check, ChevronRight, ArrowLeft } from 'lucide-react';
+import { Check, ChevronRight, ArrowLeft, ShoppingCart, Trash2, X, Flame } from 'lucide-react';
 import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
 
 /* =============================================
@@ -194,6 +194,149 @@ const PRODUCTS = [
     ],
   },
   {
+    id: 'cucina_yellowstone',
+    name: 'Cucina barbecue modello Yellowstone',
+    tagline: 'Il massimo per la tua cucina outdoor.',
+    description: 'Modello Yellowstone configurabile con o senza bancone di base. Aggiungi il BBQ Grill, mensole laterali, pannelli e ruote per personalizzare la tua postazione di cottura perfetta.',
+    image: '/cucina_yellowstone/B.jpeg',
+    video: '/cucina_yellowstone/PrincipaleC.mp4',
+    intro360: '/cucina_yellowstone/360C.mp4',
+    thumbnail: '/cucina_yellowstone/B.jpeg',
+    basePrice: 0,
+    variantType: 'yellowstone',
+    features: [
+      'Configurabile con o senza bancone',
+      'BBQ Grill a legna/carbonella',
+      'Mensole laterali e pannelli su misura',
+    ],
+    variantGroups: [
+      {
+        id: 'size',
+        label: 'Dimensione',
+        options: [
+          { id: '700', label: 'L 700', sub: 'Bancone L700×P750×H630', specs: ['Misura L700'] },
+          { id: '900', label: 'L 900', sub: 'Bancone L900×P750×H630', specs: ['Misura L900'] },
+          { id: '1100', label: 'L 1100', sub: 'Bancone L1100×P750×H630', specs: ['Misura L1100'] },
+        ]
+      },
+      {
+        id: 'finish',
+        label: 'Materiale',
+        options: [
+          { id: 'ral7016', label: 'Verniciato RAL 7016', sub: 'Finitura Premium' },
+          { id: 'corten', label: 'Acciaio Corten', sub: 'Materiale naturale' },
+          { id: 'inox', label: 'AISI 304 Spazzolato', sub: 'Acciaio Inossidabile' }
+        ]
+      }
+    ],
+    pricingMatrix: {
+      '700': { ral7016: 0, corten: 0, inox: 0 },
+      '900': { ral7016: 0, corten: 0, inox: 0 },
+      '1100': { ral7016: 0, corten: 0, inox: 0 }
+    },
+    baseOptions: [
+      { id: 'senza_base', name: 'Senza Bancone', price: 0, image: null },
+      { 
+        id: 'bancone', name: 'Bancone di base', image: '/cucina_yellowstone/B.jpeg',
+        pricingMatrix: {
+          '700': { ral7016: 395.28, corten: 439.20, inox: 592.92 },
+          '900': { ral7016: 461.16, corten: 512.40, inox: 691.74 },
+          '1100': { ral7016: 527.04, corten: 585.60, inox: 790.56 }
+        }
+      }
+    ],
+    accessories: [
+      {
+        id: 'grill', name: 'BBQ Grill a legna/carbonella', image: '/cucina_yellowstone/1.jpeg',
+        requiresBase: false,
+        sizeVariants: {
+          '700': { specs: 'Camera L630/P500' },
+          '900': { specs: 'Camera L830/P500' },
+          '1100': { specs: 'Camera L1030/P500' }
+        },
+        pricingMatrix: {
+          '700': { ral7016: 585.60, corten: 658.80, inox: 988.20 },
+          '900': { ral7016: 702.72, corten: 790.56, inox: 1185.84 },
+          '1100': { ral7016: 810.90, corten: 922.32, inox: 1383.48 }
+        }
+      },
+      {
+        id: 'mensole', name: 'Mensole laterali per caminetto', image: '/cucina_yellowstone/2.jpeg',
+        requiresBase: true,
+        sizeVariants: {
+          '700': { specs: 'Barre inox L1700' },
+          '900': { specs: 'Barre inox L1900' },
+          '1100': { specs: 'Barre inox L2100' }
+        },
+        pricingMatrix: {
+          '700': { ral7016: 335.50, corten: 366.00, inox: 549.00 },
+          '900': { ral7016: 348.92, corten: 380.67, inox: 570.96 },
+          '1100': { ral7016: 362.34, corten: 395.28, inox: 592.92 }
+        }
+      },
+      {
+        id: 'pannelli_fissi', name: 'Pannelli di tamponamento fisso (3 lati)', image: '/cucina_yellowstone/3.jpeg',
+        requiresBase: true,
+        excludes: ['pannelli_porta'],
+        sizeVariants: {
+          '700': { specs: 'Retro 700x570' },
+          '900': { specs: 'Retro 900x570' },
+          '1100': { specs: 'Retro 1100x570' }
+        },
+        pricingMatrix: {
+          '700': { ral7016: 134.20, corten: 146.40, inox: 219.60 },
+          '900': { ral7016: 161.04, corten: 175.68, inox: 263.52 },
+          '1100': { ral7016: 187.88, corten: 204.96, inox: 307.44 }
+        }
+      },
+      {
+        id: 'pannelli_porta', name: 'Pannelli su 3 lati + porta anteriore', image: '/cucina_yellowstone/3.jpeg',
+        requiresBase: true,
+        excludes: ['pannelli_fissi'],
+        sizeVariants: {
+          '700': { specs: 'Porta anteriore 700x570' },
+          '900': { specs: 'Porta anteriore 900x570' },
+          '1100': { specs: 'Porta anteriore 1100x570' }
+        },
+        pricingMatrix: {
+          '700': { ral7016: 201.30, corten: 219.60, inox: 329.40 },
+          '900': { ral7016: 241.56, corten: 263.52, inox: 395.28 },
+          '1100': { ral7016: 281.82, corten: 307.44, inox: 461.16 }
+        }
+      },
+      {
+        id: 'ruote_zincate', name: 'Coppia di ruote zincate', image: '/cucina_yellowstone/A.jpeg',
+        requiresBase: true,
+        excludes: ['ruote_inox'],
+        sizeVariants: {
+          '700': { specs: 'Ø 200 mm' },
+          '900': { specs: 'Ø 200 mm' },
+          '1100': { specs: 'Ø 200 mm' }
+        },
+        pricingMatrix: {
+          '700': { ral7016: 108.00, corten: 108.00, inox: 108.00 },
+          '900': { ral7016: 108.00, corten: 108.00, inox: 108.00 },
+          '1100': { ral7016: 108.00, corten: 108.00, inox: 108.00 }
+        }
+      },
+      {
+        id: 'ruote_inox', name: 'Coppia di ruote inox', image: '/cucina_yellowstone/A.jpeg',
+        requiresBase: true,
+        excludes: ['ruote_zincate'],
+        sizeVariants: {
+          '700': { specs: 'Ø 200 mm' },
+          '900': { specs: 'Ø 200 mm' },
+          '1100': { specs: 'Ø 200 mm' }
+        },
+        pricingMatrix: {
+          '700': { ral7016: 180.00, corten: 180.00, inox: 180.00 },
+          '900': { ral7016: 180.00, corten: 180.00, inox: 180.00 },
+          '1100': { ral7016: 180.00, corten: 180.00, inox: 180.00 }
+        }
+      }
+    ]
+  },
+  {
     id: 'suma',
     name: 'Suma',
     tagline: 'Il barbecue da tavolo professionale.',
@@ -284,6 +427,16 @@ const PRODUCTS = [
           standard: { price: 122.00, specs: '520×300×110H mm' },
         },
       },
+      {
+        id: 'tavolo_suma_acc',
+        name: 'Tavolo Suma (con incasso BBQ)',
+        subtitle: 'Integrazione perfetta per il tuo outdoor',
+        video: '/arredogiardino/tavolo-suma.mp4',
+        sizeVariants: {
+          compact:  { price: 0, specs: 'Su preventivo' },
+          standard: { price: 0, specs: 'Su preventivo' },
+        },
+      },
     ],
   },
   {
@@ -316,7 +469,18 @@ const PRODUCTS = [
         specs: ['Camera 1000×110×126H mm', 'Ingombro 1050×450×850H mm', 'Griglia a maglia 150×500 mm'],
       },
     ],
-    accessories: [],
+    accessories: [
+      {
+        id: 'motore_arrosticini',
+        name: 'Motore per arrosticini',
+        video: '/arrosticini/motorearrosticini.mp4',
+        image: '/arrosticini/motorearrosticini.mp4',
+        prices: {
+          'arrosticini_500': 241.20,
+          'arrosticini_1000': 211.14
+        }
+      }
+    ],
   },
   {
     id: 'grilltec360',
@@ -400,6 +564,7 @@ const PRODUCTS = [
           '3000': { ral: 1427.40, aisi: 1712.88 }
         }
       },
+
       {
         id: 'panca',
         name: 'Panca',
@@ -453,6 +618,81 @@ const PRODUCTS = [
         ],
         pricingMatrix: {
           'standard': { aisi: 497.76 }
+        }
+      }
+    ]
+  },
+  {
+    id: 'bracieri_tavoli',
+    name: 'Bracieri e Tavoli da Cottura',
+    tagline: 'Il calore del fuoco, la convivialità del tavolo.',
+    description: 'Una collezione di bracieri e tavoli da cottura progettati per unire design e funzionalità. Perfetti per creare postazioni di cottura all\'aperto o angoli relax con fuoco a vista.',
+    video: '/tavoli_cottura/bracierequadro-corten.mp4',
+    image: '/tavoli_cottura/bracierequadro-corten.mp4',
+    thumbnail: '/tavoli_cottura/bracierequadro-corten.mp4',
+    basePrice: 1629.00,
+    variantType: 'composition',
+    features: [
+      'Materiali premium: Corten, Lamiera e Legno IPE',
+      'Piastre di cottura in acciaio AISI 304',
+      'Bracieri integrati nel design',
+      'Alta resistenza agli agenti atmosferici'
+    ],
+    items: [
+      {
+        id: 'braciere_quadro_corten',
+        name: 'Braciere Quadro in Corten',
+        video: '/tavoli_cottura/bracierequadro-corten.mp4',
+        image: '/tavoli_cottura/bracierequadro-corten.mp4',
+        materials: [{ id: 'corten', label: 'Acciaio Corten' }],
+        sizes: [{ id: '810', label: '810x810', sub: 'H 860 mm' }],
+        pricingMatrix: { '810': { corten: 1629.00 } }
+      },
+      {
+        id: 'braciere_quadro_verniciato',
+        name: 'Braciere Quadro Verniciato',
+        video: '/tavoli_cottura/bracierequadro-verniciato.mp4',
+        image: '/tavoli_cottura/bracierequadro-verniciato.mp4',
+        materials: [{ id: 'ral9016', label: 'Verniciato RAL 9016' }],
+        sizes: [{ id: '1220', label: '1220x1220', sub: 'H 860 mm' }],
+        pricingMatrix: { '1220': { ral9016: 1773.00 } }
+      },
+      {
+        id: 'tavolo_braciere_metallo',
+        name: 'Tavolo Braciere in Lamiera',
+        video: '/tavoli_cottura/tavolobraciere-metallo.mp4',
+        image: '/tavoli_cottura/tavolobraciere-metallo.mp4',
+        materials: [{ id: 'ral7016', label: 'Verniciato RAL 7016' }],
+        sizes: [{ id: '1700', label: '1700x1700', sub: 'H 800 mm' }],
+        pricingMatrix: { '1700': { ral7016: 2349.00 } }
+      },
+      {
+        id: 'tavolo_braciere_legno',
+        name: 'Tavolo Braciere in Legno IPE',
+        video: '/tavoli_cottura/tavolobraciere-legno.mp4',
+        image: '/tavoli_cottura/tavolobraciere-legno.mp4',
+        materials: [{ id: 'ipe', label: 'Legno IPE' }],
+        sizes: [{ id: '1825', label: '1825x1825', sub: 'H 750 mm' }],
+        pricingMatrix: { '1825': { ipe: 2718.00 } }
+      },
+      {
+        id: 'tavolo_suma',
+        name: 'Tavolo Suma (con incasso BBQ)',
+        video: '/arredogiardino/tavolo-suma.mp4',
+        image: '/arredogiardino/tavolo-suma.mp4',
+        materials: [
+          { id: 'ral', label: 'Verniciato RAL' },
+          { id: 'aisi', label: 'Acciaio AISI 304' }
+        ],
+        sizes: [
+          { id: '2000', label: '2000x1000', sub: 'H 750 mm' },
+          { id: '2500', label: '2500x1000', sub: 'H 750 mm' },
+          { id: '3000', label: '3000x1000', sub: 'H 750 mm' }
+        ],
+        pricingMatrix: {
+          '2000': { ral: 0, aisi: 0 },
+          '2500': { ral: 0, aisi: 0 },
+          '3000': { ral: 0, aisi: 0 }
         }
       }
     ]
@@ -680,11 +920,124 @@ function NavBar({ onBack }) {
   );
 }
 
-function sendQuoteEmail(productName, configDetails, totalPrice) {
+function sendQuoteEmailGlobal(cart, total) {
   const email = "grilltec@br9.it";
-  const subject = `Richiesta preventivo: ${productName}`;
-  const body = `Salve,\n\nVorrei richiedere un preventivo per la seguente configurazione:\n\nProdotto: ${productName}\n${configDetails}\nTotale stimato: € ${totalPrice.toFixed(2)}\n\nIn attesa di un vostro riscontro.\nCordiali saluti.`;
-  window.location.href = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  let body = "Ciao, vorrei ricevere un preventivo per i seguenti prodotti configurati:\n\n";
+  cart.forEach((item, i) => {
+    body += `--- PRODOTTO ${i+1}: ${item.productName} ---\n`;
+    body += item.details + "\n";
+    body += `Subtotale stimato: € ${item.price.toFixed(2)}\n\n`;
+  });
+  body += `===============================\nTOTALE STIMATO: € ${total.toFixed(2)}\n\n`;
+  body += "In attesa di un vostro riscontro.\nGrazie.";
+  
+  window.location.href = `mailto:${email}?subject=${encodeURIComponent("Richiesta Preventivo Multiplo - Grilltec")}&body=${encodeURIComponent(body)}`;
+}
+
+function CartDrawer({ cart, onClose, onRemoveItem, onSendQuote }) {
+  const total = cart.reduce((sum, item) => sum + item.price, 0);
+  
+  return (
+    <motion.div className="cart-drawer-overlay" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={onClose} style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(0,0,0,0.6)', zIndex: 9999, display: 'flex', justifyContent: 'flex-end' }}>
+      <motion.div className="cart-drawer" initial={{ x: '100%' }} animate={{ x: 0 }} exit={{ x: '100%' }} transition={{ type: 'spring', bounce: 0, duration: 0.4 }} onClick={e => e.stopPropagation()} style={{ width: '100%', maxWidth: 400, backgroundColor: '#111', height: '100%', display: 'flex', flexDirection: 'column', borderLeft: '1px solid #333' }}>
+        <div className="cart-header" style={{ padding: '24px 20px', borderBottom: '1px solid #333', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <h2 style={{ margin: 0, fontSize: '1.2rem', fontWeight: 600 }}>Il tuo Preventivo</h2>
+          <button onClick={onClose} style={{ background: 'transparent', border: 'none', color: '#fff', cursor: 'pointer' }}><X size={24} /></button>
+        </div>
+        
+        <div className="cart-body" style={{ flex: 1, overflowY: 'auto', padding: 20 }}>
+          {cart.length === 0 ? (
+            <div className="cart-empty" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%', opacity: 0.5 }}>
+              <ShoppingCart size={48} style={{ marginBottom: 16 }} />
+              <p>Nessun prodotto configurato.</p>
+            </div>
+          ) : (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+              {cart.map((item, i) => (
+                <div key={i} className="cart-item" style={{ backgroundColor: '#1a1a1a', borderRadius: 12, padding: 16, border: '1px solid #333' }}>
+                  <div className="cart-item-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 12 }}>
+                    <h3 style={{ margin: 0, fontSize: '1rem', color: '#0a84ff' }}>{item.productName}</h3>
+                    <button onClick={() => onRemoveItem(i)} style={{ background: 'transparent', border: 'none', color: '#ff4444', cursor: 'pointer', padding: 4 }}><Trash2 size={16} /></button>
+                  </div>
+                  <pre className="cart-item-details" style={{ margin: 0, fontSize: '0.8rem', color: 'rgba(255,255,255,0.7)', whiteSpace: 'pre-wrap', fontFamily: 'inherit', lineHeight: 1.4 }}>{item.details}</pre>
+                  <p className="cart-item-price" style={{ margin: '12px 0 0', fontSize: '0.9rem', fontWeight: 600, textAlign: 'right' }}>€ {item.price.toFixed(2)}</p>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+        
+        {cart.length > 0 && (
+          <div className="cart-footer" style={{ padding: 24, borderTop: '1px solid #333', backgroundColor: '#0a0a0a' }}>
+            <div className="cart-total" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
+              <span style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.9rem' }}>Totale stimato:</span>
+              <span style={{ fontSize: '1.4rem', fontWeight: 700 }}>€ {total.toFixed(2)}</span>
+            </div>
+            <button className="btn-primary" style={{ width: '100%', justifyContent: 'center', padding: '16px' }} onClick={() => onSendQuote(total)}>
+              Invia Richiesta Unica
+            </button>
+          </div>
+        )}
+      </motion.div>
+    </motion.div>
+  );
+}
+
+function CartFloatingButton({ count, onClick }) {
+  if (count === 0) return null;
+  return (
+    <motion.button
+      initial={{ scale: 0, rotate: -90 }}
+      animate={{ scale: 1, rotate: 0 }}
+      exit={{ scale: 0, rotate: 90 }}
+      whileHover={{ scale: 1.08, rotate: -5 }}
+      whileTap={{ scale: 0.92 }}
+      onClick={onClick}
+      style={{
+        position: 'fixed',
+        top: 85,
+        right: 24,
+        width: 72,
+        height: 72,
+        borderRadius: 36,
+        background: 'linear-gradient(135deg, #0a84ff, #005bb5)',
+        color: '#fff',
+        border: '2px solid rgba(255,255,255,0.2)',
+        boxShadow: '0 12px 40px rgba(10,132,255,0.4), inset 0 -4px 12px rgba(0,0,0,0.2)',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        cursor: 'pointer',
+        zIndex: 1000
+      }}
+    >
+      <div style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <ShoppingCart size={26} strokeWidth={2.5} style={{ position: 'relative', zIndex: 2 }} />
+        <motion.div
+          animate={{ opacity: [0.5, 1, 0.5], scale: [0.9, 1.2, 0.9] }}
+          transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
+          style={{ position: 'absolute', top: -14, color: '#ffaa44', zIndex: 1 }}
+        >
+          <Flame size={20} strokeWidth={3} fill="rgba(255,170,68,0.5)" />
+        </motion.div>
+      </div>
+      <div style={{
+        position: 'absolute',
+        bottom: -6,
+        backgroundColor: '#ff3b30',
+        color: '#fff',
+        padding: '2px 10px',
+        borderRadius: 12,
+        fontSize: '0.8rem',
+        fontWeight: '900',
+        boxShadow: '0 4px 12px rgba(0,0,0,0.4)',
+        border: '2px solid #111'
+      }}>
+        {count}
+      </div>
+    </motion.button>
+  );
 }
 
 function FooterBar({ totalPrice, delay = 0.6, onRequestQuote }) {
@@ -711,7 +1064,7 @@ function FooterBar({ totalPrice, delay = 0.6, onRequestQuote }) {
         </AnimatePresence>
       </div>
       <motion.button className="btn-primary btn-footer" whileTap={{ scale: 0.97 }} onClick={onRequestQuote}>
-        Richiedi Preventivo
+        Aggiungi al Preventivo
       </motion.button>
     </motion.div>
   );
@@ -922,7 +1275,7 @@ function ProductSelect({ onSelect }) {
 /* =============================================
    SUMA CONFIGURATOR (size → finish + auto-sized accessories)
    ============================================= */
-function SumaConfigurator({ product, onBack }) {
+function SumaConfigurator({ product, onBack, onNavigate, onAddToCart }) {
   const sizeGroup   = product.variantGroups.find(g => g.id === 'size');
   const finishGroup = product.variantGroups.find(g => g.id === 'finish');
 
@@ -964,10 +1317,11 @@ function SumaConfigurator({ product, onBack }) {
     if (activeAccessories.length > 0) {
       details += `- Accessori:\n`;
       activeAccessories.forEach(acc => {
-        details += `  * ${acc.name}\n`;
+        const accPrice = acc.sizeVariants[selectedSize]?.price ?? 0;
+        details += `  * ${acc.name} ${accPrice === 0 ? '(Su preventivo)' : ''}\n`;
       });
     }
-    sendQuoteEmail(product.name, details, totalPrice);
+    onAddToCart(product.name, details, totalPrice);
   };
 
   return (
@@ -1091,7 +1445,7 @@ function SumaConfigurator({ product, onBack }) {
                     <div className="acc-card-body">
                       <p className="acc-card-name">{acc.name}</p>
                       <p className="acc-card-sub">{sizeVar.specs}</p>
-                      <p className="acc-card-price">+ € {sizeVar.price.toFixed(2)}</p>
+                      <p className="acc-card-price">{sizeVar.price === 0 ? 'Su preventivo' : `+ € ${sizeVar.price.toFixed(2)}`}</p>
                     </div>
                     <motion.div
                       className="acc-card-check"
@@ -1112,6 +1466,56 @@ function SumaConfigurator({ product, onBack }) {
                 );
               })}
             </div>
+            
+            <AnimatePresence>
+              {selectedAcc.includes('tavolo_suma_acc') && onNavigate && (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  style={{
+                    background: 'linear-gradient(135deg, #1f1c18, #332115)',
+                    border: '1px solid #ffaa44',
+                    borderRadius: 16,
+                    padding: 16,
+                    marginTop: 16,
+                    display: 'flex',
+                    gap: 16,
+                    alignItems: 'center',
+                    cursor: 'pointer'
+                  }}
+                  onClick={() => {
+                    const bracieriProd = PRODUCTS.find(p => p.id === 'bracieri_tavoli');
+                    if (bracieriProd) {
+                      const sizeOpt = sizeGroup.options.find(o => o.id === selectedSize);
+                      const finishOpt = finishGroup.options.find(o => o.id === selectedFinish);
+                      let details = `- Misura: ${sizeOpt?.label || ''}\n- Finitura: ${finishOpt?.label || ''}\n`;
+                      if (activeAccessories.length > 0) {
+                        details += `- Accessori:\n`;
+                        activeAccessories.forEach(acc => {
+                          const accPrice = acc.sizeVariants[selectedSize]?.price ?? 0;
+                          details += `  * ${acc.name} ${accPrice === 0 ? '(Su preventivo)' : ''}\n`;
+                        });
+                      }
+                      onAddToCart(product.name, details, totalPrice, bracieriProd);
+                    }
+                  }}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <div style={{ width: 80, height: 60, borderRadius: 8, overflow: 'hidden', flexShrink: 0, border: '1px solid rgba(255,170,68,0.5)' }}>
+                    <video src="/arredogiardino/tavolo-suma.mp4" autoPlay loop muted playsInline style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  </div>
+                  <div style={{ flex: 1 }}>
+                    <p style={{ margin: 0, fontSize: '0.9rem', color: '#ffaa44', fontWeight: 600 }}>Scegli le misure del tavolo!</p>
+                    <p style={{ margin: '4px 0 0', fontSize: '0.8rem', color: '#fff', lineHeight: 1.3 }}>Il tuo Suma verrà aggiunto al preventivo e passerai a Bracieri e Tavoli da cottura.</p>
+                  </div>
+                  <div style={{ width: 32, height: 32, borderRadius: 16, backgroundColor: '#ffaa44', color: '#000', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold' }}>
+                    →
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </motion.div>
         </div>
       </div>
@@ -1124,19 +1528,38 @@ function SumaConfigurator({ product, onBack }) {
 /* =============================================
    FLAT CONFIGURATOR (Ultra Suma)
    ============================================= */
-function FlatConfigurator({ product, onBack }) {
+function FlatConfigurator({ product, onBack, onAddToCart }) {
   const [selectedVariant, setSelectedVariant] = useState(product.variants[0]);
+  const [selectedAcc, setSelectedAcc] = useState([]);
+
+  const toggleAcc = (id) => {
+    setSelectedAcc(prev => prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]);
+  };
+
+  const accTotal = selectedAcc.reduce((sum, id) => {
+    const acc = product.accessories?.find(a => a.id === id);
+    return sum + (acc?.prices?.[selectedVariant.id] || 0);
+  }, 0);
+
+  const totalPrice = selectedVariant.price + accTotal;
+  const activeAccessories = product.accessories?.filter(a => selectedAcc.includes(a.id)) || [];
 
   const handleRequestQuote = () => {
-    const details = `- Variante: ${selectedVariant?.label || ''}\n`;
-    sendQuoteEmail(product.name, details, selectedVariant.price);
+    let details = `- Variante: ${selectedVariant?.label || ''}\n`;
+    if (activeAccessories.length > 0) {
+      details += `- Accessori:\n`;
+      activeAccessories.forEach(acc => {
+        details += `  * ${acc.name}\n`;
+      });
+    }
+    onAddToCart(product.name, details, totalPrice);
   };
 
   return (
     <motion.div className="configurator" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.4 }}>
       <NavBar onBack={onBack} />
       <div className="config-layout">
-        <ProductViewer product={product} activeAccessories={[]} />
+        <ProductViewer product={product} activeAccessories={activeAccessories} />
         <div className="config-panel">
           <motion.div className="config-product-header" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}>
             <h2 className="config-model-name">{product.name}</h2>
@@ -1187,9 +1610,62 @@ function FlatConfigurator({ product, onBack }) {
               })}
             </div>
           </motion.div>
+
+          {product.accessories && product.accessories.length > 0 && (
+            <motion.div className="config-section" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.48 }}>
+              <div className="config-section-header">
+                <span className="config-section-label">Accessori opzionali</span>
+                {selectedAcc.length > 0 && <span className="config-section-count">{selectedAcc.length} selezionati</span>}
+              </div>
+              <div className="acc-list">
+                {product.accessories.map((acc, i) => {
+                  const isSelected = selectedAcc.includes(acc.id);
+                  const accPrice = acc.prices?.[selectedVariant.id] || 0;
+                  return (
+                    <motion.div
+                      key={acc.id}
+                      className={`acc-card ${isSelected ? 'acc-card--selected' : ''}`}
+                      onClick={() => toggleAcc(acc.id)}
+                      initial={{ opacity: 0, y: 16 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.52 + i * 0.08 }}
+                      whileTap={{ scale: 0.985 }}
+                    >
+                      <div className="acc-card-img-wrap">
+                        {acc.video ? (
+                          <video autoPlay loop muted playsInline className="acc-card-video" src={acc.video} />
+                        ) : (
+                          <img src={acc.image} alt={acc.name} className="acc-card-img" />
+                        )}
+                      </div>
+                      <div className="acc-card-body">
+                        <p className="acc-card-name">{acc.name}</p>
+                        <p className="acc-card-price">+ € {accPrice.toFixed(2)}</p>
+                      </div>
+                      <motion.div
+                        className="acc-card-check"
+                        animate={isSelected
+                          ? { backgroundColor: '#0a84ff', borderColor: '#0a84ff' }
+                          : { backgroundColor: 'transparent', borderColor: 'rgba(255,255,255,0.25)' }}
+                        transition={{ duration: 0.22 }}
+                      >
+                        <AnimatePresence>
+                          {isSelected && (
+                            <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} exit={{ scale: 0 }} transition={{ duration: 0.18 }}>
+                              <Check size={14} strokeWidth={3} color="#fff" />
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
+                      </motion.div>
+                    </motion.div>
+                  );
+                })}
+              </div>
+            </motion.div>
+          )}
         </div>
       </div>
-      <FooterBar totalPrice={selectedVariant.price} delay={0.6} onRequestQuote={handleRequestQuote} />
+      <FooterBar totalPrice={totalPrice} delay={0.6} onRequestQuote={handleRequestQuote} />
     </motion.div>
   );
 }
@@ -1197,7 +1673,7 @@ function FlatConfigurator({ product, onBack }) {
 /* =============================================
    MATRIX CONFIGURATOR (Grilltec 360)
    ============================================= */
-function MatrixConfigurator({ product, onBack }) {
+function MatrixConfigurator({ product, onBack, onAddToCart }) {
   const [selections, setSelections] = useState(() => {
     const init = {};
     product.variantGroups.forEach(g => { init[g.id] = g.options[0].id; });
@@ -1212,7 +1688,7 @@ function MatrixConfigurator({ product, onBack }) {
       const opt = g.options.find(o => o.id === selections[g.id]);
       details += `- ${g.label}: ${opt?.label || ''}\n`;
     });
-    sendQuoteEmail(product.name, details, totalPrice);
+    onAddToCart(product.name, details, totalPrice);
   };
 
   return (
@@ -1358,11 +1834,11 @@ function FlameTransition({ onComplete }) {
 /* =============================================
    YELLOWSTONE CONFIGURATOR
    ============================================= */
-function YellowstoneConfigurator({ product, onBack }) {
+function YellowstoneConfigurator({ product, onBack, onAddToCart }) {
   const [introPhase, setIntroPhase] = useState(0); // 0: intro1, 1: intro2, 2: config
-  const [selectedSize, setSelectedSize] = useState('800');
-  const [selectedFinish, setSelectedFinish] = useState('ral7016');
-  const [selectedBase, setSelectedBase] = useState('piedini');
+  const [selectedSize, setSelectedSize] = useState(() => product.variantGroups.find(g => g.id === 'size').options[0].id);
+  const [selectedFinish, setSelectedFinish] = useState(() => product.variantGroups.find(g => g.id === 'finish').options[0].id);
+  const [selectedBase, setSelectedBase] = useState(() => product.baseOptions[0].id);
   const [selectedAcc, setSelectedAcc] = useState([]);
   const [tempImage, setTempImage] = useState(null);
 
@@ -1370,18 +1846,32 @@ function YellowstoneConfigurator({ product, onBack }) {
   const finishGroup = product.variantGroups.find(g => g.id === 'finish');
 
   const toggleAcc = (id) => {
+    const accObj = product.accessories.find(a => a.id === id);
+    if (!accObj) return;
+
+    // Se l'accessorio richiede il bancone e l'utente ha selezionato 'senza_base', non far nulla.
+    if (accObj.requiresBase && selectedBase === 'senza_base') {
+      return;
+    }
+
     setSelectedAcc(prev => {
       let next = prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id];
-      // Mutually exclusive paratie logic
+      
+      // Dynamic excludes logic
+      if (next.includes(id) && accObj.excludes) {
+        next = next.filter(x => !accObj.excludes.includes(x));
+      }
+
+      // Backward compatible hardcoded paratie logic for original Yellowstone
       if (id === 'paratie_sportello' && next.includes('paratie_sportello')) {
         next = next.filter(x => x !== 'paratie');
       } else if (id === 'paratie' && next.includes('paratie')) {
         next = next.filter(x => x !== 'paratie_sportello');
       }
+
       return next;
     });
 
-    const accObj = product.accessories.find(a => a.id === id);
     if (accObj) {
       setTempImage(accObj.image);
       clearTimeout(window.tempImageTimeout);
@@ -1399,9 +1889,19 @@ function YellowstoneConfigurator({ product, onBack }) {
     }
   };
 
+  // Effect to automatically deselect accessories that require a base if the base is removed
+  useEffect(() => {
+    if (selectedBase === 'senza_base') {
+      setSelectedAcc(prev => prev.filter(accId => {
+        const a = product.accessories.find(x => x.id === accId);
+        return a && !a.requiresBase;
+      }));
+    }
+  }, [selectedBase, product.accessories]);
+
   const basePrice = product.pricingMatrix[selectedSize][selectedFinish];
   const baseOpt = product.baseOptions.find(o => o.id === selectedBase);
-  const baseOptPrice = baseOpt?.price || 0;
+  const baseOptPrice = baseOpt?.pricingMatrix ? (baseOpt.pricingMatrix[selectedSize]?.[selectedFinish] || 0) : (baseOpt?.price || 0);
 
   const accTotal = selectedAcc.reduce((sum, id) => {
     const acc = product.accessories.find(a => a.id === id);
@@ -1423,7 +1923,7 @@ function YellowstoneConfigurator({ product, onBack }) {
         details += `  * ${acc.name}\n`;
       });
     }
-    sendQuoteEmail(product.name, details, totalPrice);
+    onAddToCart(product.name, details, totalPrice);
   };
 
   const { scrollY } = useScroll();
@@ -1573,7 +2073,7 @@ function YellowstoneConfigurator({ product, onBack }) {
                       <div className="matrix-option-info">
                         <p className="matrix-option-label">{opt.label}</p>
                         {opt.sub && <p className="matrix-option-sub">{opt.sub}</p>}
-                        <p className="matrix-option-price">€ {price.toFixed(2)}</p>
+                        {price > 0 && <p className="matrix-option-price">€ {price.toFixed(2)}</p>}
                       </div>
                       <CheckBadge active={active} />
                     </div>
@@ -1581,6 +2081,13 @@ function YellowstoneConfigurator({ product, onBack }) {
                 );
               })}
             </div>
+
+            {/* MATERIAL DETAILS HUD */}
+            <AnimatePresence mode="wait">
+              {selectedFinish && (
+                <MaterialPanel materialId={selectedFinish} />
+              )}
+            </AnimatePresence>
           </motion.div>
 
           {/* STEP 3: BASE SELECTION */}
@@ -1591,6 +2098,7 @@ function YellowstoneConfigurator({ product, onBack }) {
             <div className="acc-grid">
               {product.baseOptions.map(opt => {
                 const active = selectedBase === opt.id;
+                const optPrice = opt.pricingMatrix ? (opt.pricingMatrix[selectedSize]?.[selectedFinish] || 0) : (opt.price || 0);
                 return (
                   <motion.div
                     key={opt.id}
@@ -1603,7 +2111,7 @@ function YellowstoneConfigurator({ product, onBack }) {
                     </div>
                     <div className="acc-card-body">
                       <p className="acc-card-name">{opt.name}</p>
-                      <p className="acc-card-price">{opt.price === 0 ? 'Incluso' : `+ € ${opt.price.toFixed(2)}`}</p>
+                      <p className="acc-card-price">{optPrice === 0 ? 'Incluso' : `+ € ${optPrice.toFixed(2)}`}</p>
                     </div>
                     <CheckBadge active={active} />
                   </motion.div>
@@ -1620,20 +2128,25 @@ function YellowstoneConfigurator({ product, onBack }) {
             <div className="acc-grid">
               {product.accessories.map(acc => {
                 const active = selectedAcc.includes(acc.id);
-                const accPrice = acc.pricingMatrix[selectedSize][selectedFinish];
+                const disabled = acc.requiresBase && selectedBase === 'senza_base';
+                const accPrice = acc.pricingMatrix[selectedSize][selectedFinish] || 0;
+                const specText = acc.sizeVariants ? acc.sizeVariants[selectedSize]?.specs : null;
+
                 return (
                   <motion.div
                     key={acc.id}
                     className={`acc-card ${active ? 'acc-card--selected' : ''}`}
-                    onClick={() => toggleAcc(acc.id)}
-                    whileTap={{ scale: 0.97 }}
+                    onClick={() => { if (!disabled) toggleAcc(acc.id); }}
+                    whileTap={{ scale: disabled ? 1 : 0.97 }}
+                    style={{ opacity: disabled ? 0.4 : 1, cursor: disabled ? 'not-allowed' : 'pointer' }}
                   >
                     <div className="acc-card-img-wrap">
                       <img src={acc.image} alt={acc.name} className="acc-card-img" />
                     </div>
                     <div className="acc-card-body">
                       <p className="acc-card-name">{acc.name}</p>
-                      <p className="acc-card-price">+ € {accPrice.toFixed(2)}</p>
+                      {specText && <p className="acc-card-sub">{specText}</p>}
+                      <p className="acc-card-price">{accPrice === 0 ? 'Su preventivo' : `+ € ${accPrice.toFixed(2)}`}</p>
                     </div>
                     <CheckBadge active={active} />
                   </motion.div>
@@ -1659,7 +2172,7 @@ function YellowstoneConfigurator({ product, onBack }) {
 /* =============================================
    COMPOSITION CONFIGURATOR (Arredo Giardino)
    ============================================= */
-function CompositionConfigurator({ product, onBack }) {
+function CompositionConfigurator({ product, onBack, onNavigate, onAddToCart }) {
   const [selections, setSelections] = useState(() => {
     const init = {};
     product.items.forEach(item => {
@@ -1690,8 +2203,8 @@ function CompositionConfigurator({ product, onBack }) {
   const cartItems = product.items.filter(item => selections[item.id].qty > 0);
 
   const handleRequestQuote = () => {
-    if (totalPrice === 0) {
-      alert('Seleziona almeno un elemento per richiedere un preventivo.');
+    if (cartItems.length === 0) {
+      alert('Seleziona almeno un elemento per aggiungere al preventivo.');
       return;
     }
     let details = `\n`;
@@ -1700,11 +2213,12 @@ function CompositionConfigurator({ product, onBack }) {
       if (sel.qty > 0) {
         const sizeOpt = item.sizes.find(s => s.id === sel.size);
         const matOpt = item.materials.find(m => m.id === sel.material);
-        const price = item.pricingMatrix[sel.size][sel.material];
-        details += `- ${sel.qty}x ${item.name} (${sizeOpt.label}, ${matOpt.label}) — € ${(price * sel.qty).toFixed(2)}\n`;
+        const price = item.pricingMatrix[sel.size]?.[sel.material] || 0;
+        const priceLabel = price === 0 ? 'Su preventivo' : `€ ${(price * sel.qty).toFixed(2)}`;
+        details += `- ${sel.qty}x ${item.name} (${sizeOpt.label}, ${matOpt.label}) — ${priceLabel}\n`;
       }
     });
-    sendQuoteEmail(product.name, details, totalPrice);
+    onAddToCart(product.name, details, totalPrice);
   };
 
   const activeItem = product.items.find(i => i.id === activeTab) || product.items[0];
@@ -1763,7 +2277,7 @@ function CompositionConfigurator({ product, onBack }) {
                           </p>
                         </div>
                         <p style={{ margin: 0, fontSize: '0.88rem', fontWeight: 600, color: '#fff', flexShrink: 0 }}>
-                          € {(price * sel.qty).toFixed(2)}
+                          {price === 0 ? 'Su preventivo' : `€ ${(price * sel.qty).toFixed(2)}`}
                         </p>
                       </div>
                     );
@@ -1828,8 +2342,8 @@ function CompositionConfigurator({ product, onBack }) {
                       <p style={{ margin: 0, fontWeight: 600, fontSize: '0.98rem', color: '#fff' }}>{item.name}</p>
                       <p style={{ margin: '3px 0 0', fontSize: '0.8rem', color: hasQty ? '#0a84ff' : 'rgba(255,255,255,0.4)' }}>
                         {hasQty
-                          ? `${sel.qty} × € ${unitPrice.toFixed(2)} = € ${(unitPrice * sel.qty).toFixed(2)}`
-                          : `Da € ${Object.values(item.pricingMatrix[item.sizes[0].id])[0].toFixed(2)}`}
+                          ? (unitPrice === 0 ? 'Su preventivo' : `${sel.qty} × € ${unitPrice.toFixed(2)} = € ${(unitPrice * sel.qty).toFixed(2)}`)
+                          : (Object.values(item.pricingMatrix[item.sizes[0].id])[0] === 0 ? 'Su preventivo' : `Da € ${Object.values(item.pricingMatrix[item.sizes[0].id])[0].toFixed(2)}`)}
                       </p>
                     </div>
 
@@ -1888,7 +2402,7 @@ function CompositionConfigurator({ product, onBack }) {
                                 <div className="matrix-option-top">
                                   <div className="matrix-option-info">
                                     <p className="matrix-option-label">{mat.label}</p>
-                                    <p className="matrix-option-price">€ {item.pricingMatrix[sel.size][mat.id].toFixed(2)} / pz</p>
+                                    <p className="matrix-option-price">{item.pricingMatrix[sel.size][mat.id] === 0 ? 'Su preventivo' : `€ ${item.pricingMatrix[sel.size][mat.id].toFixed(2)} / pz`}</p>
                                   </div>
                                   <CheckBadge active={sel.material === mat.id} />
                                 </div>
@@ -1903,6 +2417,61 @@ function CompositionConfigurator({ product, onBack }) {
               );
             })}
           </div>
+
+          <AnimatePresence>
+            {cartItems.some(i => i.id === 'tavolo_suma') && onNavigate && (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                style={{
+                  background: 'linear-gradient(135deg, #1f1c18, #332115)',
+                  border: '1px solid #ffaa44',
+                  borderRadius: 16,
+                  padding: 16,
+                  marginTop: 16,
+                  display: 'flex',
+                  gap: 16,
+                  alignItems: 'center',
+                  cursor: 'pointer'
+                }}
+                onClick={() => {
+                  const sumaProd = PRODUCTS.find(p => p.id === 'suma');
+                  if (sumaProd) {
+                    if (cartItems.length > 0) {
+                      let details = `\n`;
+                      product.items.forEach(item => {
+                        const sel = selections[item.id];
+                        if (sel.qty > 0) {
+                          const sizeOpt = item.sizes.find(s => s.id === sel.size);
+                          const matOpt = item.materials.find(m => m.id === sel.material);
+                          const price = item.pricingMatrix[sel.size]?.[sel.material] || 0;
+                          const priceLabel = price === 0 ? 'Su preventivo' : `€ ${(price * sel.qty).toFixed(2)}`;
+                          details += `- ${sel.qty}x ${item.name} (${sizeOpt.label}, ${matOpt.label}) — ${priceLabel}\n`;
+                        }
+                      });
+                      onAddToCart(product.name, details, totalPrice, sumaProd);
+                    } else {
+                      onNavigate(sumaProd);
+                    }
+                  }
+                }}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <div style={{ width: 80, height: 60, borderRadius: 8, overflow: 'hidden', flexShrink: 0, border: '1px solid rgba(255,170,68,0.5)' }}>
+                  <video src="/arredogiardino/scoprisuma.mp4" autoPlay loop muted playsInline style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                </div>
+                <div style={{ flex: 1 }}>
+                  <p style={{ margin: 0, fontSize: '0.9rem', color: '#ffaa44', fontWeight: 600 }}>Hai scelto il tavolo con incasso!</p>
+                  <p style={{ margin: '4px 0 0', fontSize: '0.8rem', color: '#fff', lineHeight: 1.3 }}>Scopri e configura il Barbecue Suma perfetto per completare la tua postazione.</p>
+                </div>
+                <div style={{ width: 32, height: 32, borderRadius: 16, backgroundColor: '#ffaa44', color: '#000', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold' }}>
+                  →
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
 
           <FooterBar totalPrice={totalPrice} delay={0.5} onRequestQuote={handleRequestQuote} />
         </div>
@@ -1925,6 +2494,10 @@ const CONFIG_MAP = {
 export default function App() {
   const [view, setView] = useState('landing');
   const [selectedProduct, setSelectedProduct] = useState(null);
+  
+  // Global Cart State
+  const [globalCart, setGlobalCart] = useState([]);
+  const [isCartOpen, setIsCartOpen] = useState(false);
 
   const goToSelect = () => setView('flame');
   const handleFlameComplete = () => setView('select');
@@ -1932,6 +2505,16 @@ export default function App() {
   const goBack = () => {
     if (view === 'configurator') setView('select');
     else if (view === 'select') setView('landing');
+  };
+
+  const handleAddToCart = (productName, details, price, nextProduct = null) => {
+    setGlobalCart(prev => [...prev, { productName, details, price }]);
+    if (nextProduct) {
+      goToConfigurator(nextProduct);
+    } else {
+      setIsCartOpen(true);
+      setView('select'); // Ritorna alla selezione prodotti
+    }
   };
 
   const ConfigComponent = selectedProduct ? CONFIG_MAP[selectedProduct.variantType] : null;
@@ -1945,7 +2528,28 @@ export default function App() {
         {(view === 'landing' || view === 'flame') && <LandingPage key="landing" onStart={goToSelect} />}
         {view === 'select'        && <ProductSelect  key="select"        onSelect={goToConfigurator} />}
         {view === 'configurator'  && selectedProduct && ConfigComponent && (
-          <ConfigComponent key="configurator" product={selectedProduct} onBack={goBack} />
+          <ConfigComponent key="configurator" product={selectedProduct} onBack={goBack} onNavigate={goToConfigurator} onAddToCart={handleAddToCart} />
+        )}
+      </AnimatePresence>
+      
+      <AnimatePresence>
+        {view !== 'landing' && view !== 'flame' && (
+          <CartFloatingButton key="cart-btn" count={globalCart.length} onClick={() => setIsCartOpen(true)} />
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {isCartOpen && (
+          <CartDrawer 
+            cart={globalCart} 
+            onClose={() => setIsCartOpen(false)} 
+            onRemoveItem={(index) => setGlobalCart(prev => prev.filter((_, i) => i !== index))}
+            onSendQuote={(total) => {
+              sendQuoteEmailGlobal(globalCart, total);
+              setGlobalCart([]);
+              setIsCartOpen(false);
+            }}
+          />
         )}
       </AnimatePresence>
     </div>
