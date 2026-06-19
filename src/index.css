@@ -1480,3 +1480,57 @@ body {
   0%, 100% { opacity: 0.3; }
   50% { opacity: 0.8; }
 }
+
+/* OpusDesign Badge */
+.opus-badge {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(10, 10, 10, 0.6);
+  backdrop-filter: blur(8px);
+  padding: 6px 14px;
+  border-radius: 50px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  text-decoration: none;
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  z-index: 1000;
+  transition: all 0.3s ease;
+}
+
+.opus-badge:hover {
+  background: rgba(30, 30, 30, 0.8);
+  border-color: rgba(255, 255, 255, 0.15);
+  color: rgba(255, 255, 255, 0.9);
+  transform: translateY(-2px);
+}
+
+.opus-badge img {
+  height: 20px;
+  width: auto;
+  filter: brightness(0) invert(1) opacity(0.5);
+  transition: all 0.3s ease;
+}
+
+.opus-badge:hover img {
+  filter: brightness(0) invert(1) opacity(1);
+}
+
+@media (max-width: 768px) {
+  .opus-badge {
+    bottom: 16px;
+    right: 16px;
+    padding: 6px 12px;
+    font-size: 10px;
+    gap: 8px;
+  }
+  .opus-badge img {
+    height: 18px;
+  }
+}

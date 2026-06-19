@@ -2552,6 +2552,23 @@ export default function App() {
           />
         )}
       </AnimatePresence>
+      <AnimatePresence>
+        {view !== 'flame' && (
+          <motion.a 
+            href="https://opusdesign.it" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="opus-badge"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 20 }}
+            transition={{ delay: 0.5 }}
+          >
+            <span>Made by</span>
+            <img src="/opusdesign-logo-v2.svg" alt="OpusDesign" />
+          </motion.a>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
