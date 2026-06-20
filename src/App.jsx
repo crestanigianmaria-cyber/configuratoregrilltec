@@ -2491,6 +2491,76 @@ const CONFIG_MAP = {
   composition: CompositionConfigurator,
 };
 
+/* =============================================
+   SUCCESS PAGE
+   ============================================= */
+function SuccessPage({ onHome }) {
+  return (
+    <motion.div 
+      className="screen" 
+      initial={{ opacity: 0 }} 
+      animate={{ opacity: 1 }} 
+      exit={{ opacity: 0 }}
+      style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: 24, textAlign: 'center' }}
+    >
+      <motion.img 
+        src="/logo_grilltec.png" 
+        alt="Grilltec" 
+        initial={{ scale: 0.8, opacity: 0, y: -20 }}
+        animate={{ scale: 1, opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+        style={{ width: 180, marginBottom: 60 }}
+      />
+
+      <motion.div
+        initial={{ scale: 0 }}
+        animate={{ scale: 1 }}
+        transition={{ type: 'spring', damping: 15, stiffness: 200, delay: 0.3 }}
+        style={{ width: 90, height: 90, borderRadius: '50%', background: 'linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.02))', border: '1px solid rgba(255,255,255,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 32, boxShadow: '0 0 40px rgba(255,255,255,0.05)' }}
+      >
+        <motion.div
+          initial={{ scale: 0 }}
+          animate={{ scale: 1 }}
+          transition={{ type: 'spring', damping: 10, delay: 0.6 }}
+        >
+          <Check size={48} color="#fff" strokeWidth={1.5} />
+        </motion.div>
+      </motion.div>
+
+      <motion.h1 
+        initial={{ y: 20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ delay: 0.5, duration: 0.5 }}
+        style={{ fontSize: '2.5rem', fontWeight: 600, marginBottom: 16, letterSpacing: '-0.02em' }}
+      >
+        Richiesta Inviata!
+      </motion.h1>
+
+      <motion.p 
+        initial={{ y: 20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ delay: 0.6, duration: 0.5 }}
+        style={{ fontSize: '1.1rem', color: 'rgba(255,255,255,0.6)', maxWidth: 450, lineHeight: 1.6, marginBottom: 48 }}
+      >
+        Grazie per aver scelto Grilltec. Il nostro team elaborerà la tua configurazione personalizzata e ti risponderà al più presto.
+      </motion.p>
+
+      <motion.button
+        className="btn btn-primary"
+        onClick={onHome}
+        initial={{ y: 20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ delay: 0.8 }}
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+        style={{ minWidth: 220, height: 56, borderRadius: 28, fontSize: '1.1rem', fontWeight: 600 }}
+      >
+        Torna alla Home
+      </motion.button>
+    </motion.div>
+  );
+}
+
 export default function App() {
   const [view, setView] = useState('landing');
   const [selectedProduct, setSelectedProduct] = useState(null);
@@ -2505,6 +2575,11 @@ export default function App() {
   const goBack = () => {
     if (view === 'configurator') setView('select');
     else if (view === 'select') setView('landing');
+  };
+  const goToHome = () => {
+    setView('landing');
+    setGlobalCart([]);
+    setIsCartOpen(false);
   };
 
   const handleAddToCart = (productName, details, price, nextProduct = null) => {
@@ -2527,13 +2602,14 @@ export default function App() {
       <AnimatePresence mode="wait">
         {(view === 'landing' || view === 'flame') && <LandingPage key="landing" onStart={goToSelect} />}
         {view === 'select'        && <ProductSelect  key="select"        onSelect={goToConfigurator} />}
+        {view === 'success'       && <SuccessPage    key="success"       onHome={goToHome} />}
         {view === 'configurator'  && selectedProduct && ConfigComponent && (
           <ConfigComponent key="configurator" product={selectedProduct} onBack={goBack} onNavigate={goToConfigurator} onAddToCart={handleAddToCart} />
         )}
       </AnimatePresence>
       
       <AnimatePresence>
-        {view !== 'landing' && view !== 'flame' && (
+        {view !== 'landing' && view !== 'flame' && view !== 'success' && (
           <CartFloatingButton key="cart-btn" count={globalCart.length} onClick={() => setIsCartOpen(true)} />
         )}
       </AnimatePresence>
@@ -2548,6 +2624,7 @@ export default function App() {
               sendQuoteEmailGlobal(globalCart, total);
               setGlobalCart([]);
               setIsCartOpen(false);
+              setView('success');
             }}
           />
         )}
