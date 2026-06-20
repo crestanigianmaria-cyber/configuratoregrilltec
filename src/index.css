@@ -1486,7 +1486,7 @@ body {
 .opus-badge {
   position: fixed;
   bottom: 24px;
-  right: 24px;
+  left: 24px;
   display: flex;
   align-items: center;
   gap: 10px;
@@ -1526,8 +1526,8 @@ body {
 @media (max-width: 768px) {
   .opus-badge {
     bottom: 16px;
-    right: 16px;
-    padding: 6px 12px;
+    left: 16px;
+    padding: 6px 10px;
     font-size: 10px;
     gap: 8px;
   }
