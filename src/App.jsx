@@ -2553,7 +2553,7 @@ export default function App() {
         )}
       </AnimatePresence>
       <AnimatePresence>
-        {view !== 'flame' && (
+        {view === 'select' && (
           <motion.a 
             href="https://opusdesign.it" 
             target="_blank" 
