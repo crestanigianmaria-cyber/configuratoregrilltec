@@ -2562,12 +2562,30 @@ function SuccessPage({ onHome }) {
 }
 
 export default function App() {
-  const [view, setView] = useState('landing');
+  const [view, setView] = useState(() => {
+    return window.location.pathname === '/grazie' ? 'success' : 'landing';
+  });
   const [selectedProduct, setSelectedProduct] = useState(null);
   
   // Global Cart State
   const [globalCart, setGlobalCart] = useState([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
+
+  useEffect(() => {
+    if (view === 'success') {
+      window.history.pushState({}, '', '/grazie');
+      if (typeof window.gtag === 'function') {
+        window.gtag('config', 'G-W92BMNFELW', { page_path: '/grazie' });
+      }
+    } else {
+      if (window.location.pathname !== '/') {
+        window.history.pushState({}, '', '/');
+        if (typeof window.gtag === 'function') {
+          window.gtag('config', 'G-W92BMNFELW', { page_path: '/' });
+        }
+      }
+    }
+  }, [view]);
 
   const goToSelect = () => setView('flame');
   const handleFlameComplete = () => setView('select');
